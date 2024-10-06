@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ========================= SECTION MAIN ========================= -->
+<section>
+    <div class="container">
+
+        <div class="intro-banner-wrap">
+            <img src="{% static 'images/banners/1.png' %}" class="img-fluid rounded">
+        </div>
+
+    </div> <!- </div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION MAIN END// ========================= -->
+
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name padding-y-sm">
+    <div class="container">
+
+        <header class="section-heading">
+            <a href="{% url 'almacen' %}" class="btn btn-outline-primary float-right">ver todos</a>
+            <h3 class="section-title">productos populares</h3>
+        </header><!-- sect-heading -->
+
+
+        <div class="row">
+            {% for producto in productos %}
+            <div class="col-md-3">
+                <div class="card card-product-grid">
+                    <a href="{{ producto.get_url }}" class="img-wrap">
+                    <img src="{{ producto.imagen.url }}" style="width: 100%;"></a>
+                    <figcaption class="info-wrap">
+                        <a href="{{ producto.get_url }}" class="title">{{producto.nombre_producto}}</a>
+                        <div class="price mt-1">${{producto.precio}}</div> <!-- price-wrap.// -->
+                    </figcaption>
+                </div>
+            </div> <!-- col.// -->
+            {% endfor%}
+        </div> <!-- row.// -->
+
+    </div><!-- container // -->
+</section>
+<!-- ========================= SECTION  END// ========================= -->
+
+
+
+
+
+
+</body>
+
+</html>
+
+{% endblock%}

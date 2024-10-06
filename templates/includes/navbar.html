@@ -1,0 +1,50 @@
+{% load static %}
+
+<header class="p-3 bg-dark text-white">
+
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            	<a href="{% url 'inicio'%}" class="brand-wrap">
+			<img class="logo" src="{% static 'images/logo1.png' %}">
+		</a> <!-
+
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap" />
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'inicio'%}" class="nav-link px-2 text-white">Inicio</a></li>
+                <li><a href="{% url 'almacen'%}" class="nav-link px-2 text-white">Almacen</a></li>
+                <div class="col-lg col-sm col-md col-6 flex-grow-0">
+                    <div class="category-wrap dropdown d-inline-block float-right">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"> 
+                            <i class="fa fa-bars"></i> Categorias
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'almacen'%}">todos los productos</a>
+                            {% for categoria in links %}
+                            <a class="dropdown-item" href="{{categoria.get_url}}">{{categoria.nombre_categoria}}</a>
+                            {% endfor %}
+                        </div>
+                    </div>  <!-- category-wrap.// -->
+                </div> <!-- col.// -->
+            </ul>
+        
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <button type="button" class="btn btn-warning">Sign-up</button>
+                <a href="./cart.html" class="widget-header pl-3 ml-3">
+                    <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+                    <span class="badge badge-pill badge-danger notify">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
