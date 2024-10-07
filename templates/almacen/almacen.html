@@ -110,7 +110,7 @@
     
     <header class="border-bottom mb-4 pb-3">
             <div class="form-inline">
-                <span class="mr-md-auto"><b>{{ producto_count}}</b> items Found</span>
+                <span class="mr-md-auto"><b>{{ producto_count}}</b> artículos encontrados</span>
                 
             </div>
     </header><!-- sect-heading -->
@@ -129,7 +129,7 @@
                             <span class="price">${{producto.precio}}</span>
                         </div> <!-- price-wrap.// -->
                     </div>
-                    <a href="#" class="btn btn-block btn-warning">Agregar a tu carro</a>
+                    <a href="{% url 'add_carrito' producto.id%}" class="btn btn-block btn-warning">Agregar a tu carro</a>
                 </figcaption>
             </figure>
         </div> <!-- col.// -->
