@@ -1,5 +1,4 @@
 from urllib import request
-from django.http import HttpResponse
 from django.shortcuts import redirect, render,get_object_or_404
 
 from almacen.models import Producto
@@ -38,6 +37,8 @@ def remove_carrito(request, producto_id):
         return redirect('carritoCompra')
 
 def add_carrito(request,producto_id):
+    modelo=request.GET['modelo']
+    size=request.GET['size']
     producto = Producto.objects.get(id=producto_id) #con esto obtenemos el productos
     try:
         cart = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos 

@@ -22,5 +22,21 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre_producto
-    
+
+
+variacion_categoria_choice = (
+    ('modelo','modelo'),
+    ('size','size'),
+)
+class Variacion(models.Model):
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
+    variacion_categoria = models.CharField(max_length=50,choices=variacion_categoria_choice)
+    valor_variacion = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    created_date =models.DateTimeField(auto_now_add=True)
+    modified_date =models.DateTimeField(auto_now=True)
+
+    def __unicode__(self): 
+        return self.producto
+
 

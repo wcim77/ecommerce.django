@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Producto
+from .models import Producto, Variacion
 
 
 # Register your models here.
@@ -10,3 +10,4 @@ class ProductoAdmin(admin.ModelAdmin):
     list_editable = ('precio','stock','is_available')
     
 admin.site.register(Producto,ProductoAdmin)
+admin.site.register(Variacion)

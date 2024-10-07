@@ -17,69 +17,56 @@
           </article> <!-- gallery-wrap .end// -->
         </aside>
         <main class="col-md-6 border-left">
-          <article class="content-body">
+          <form action="{% url 'add_carrito' single_producto.id %}" method="GET">
 
-            <h2 class="title">{{ single_producto.nombre_producto }}</h2>
+            <article class="content-body">
 
-            <div class="mb-3">
-              <var class="price h4">${{ single_producto.precio }}</var>
-            </div>
+              <h2 class="title">{{ single_producto.nombre_producto }}</h2>
 
-            <p>{{ single_producto.descripcion }}</p>
-
-            <hr>
-            <div class="row">
-              <div class="item-option-select">
-                <h6>Choose Color</h6>
-                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> Silver
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> Gray
-                  </label>
-                  <label class="btn btn-light active">
-                    <input type="radio" name="radio_color checked"> Gold
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> Black
-                  </label>
-                </div>
+              <div class="mb-3">
+                <var class="price h4">${{ single_producto.precio }}</var>
               </div>
-            </div> <!-- row.// -->
-            <div class="row">
-              <div class="item-option-select">
-                <h6>Select Size</h6>
-                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> S
-                  </label>
-                  <label class="btn btn-light active">
-                    <input type="radio" name="radio_color" checked> M
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> L
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> XL
-                  </label>
+
+              <p>{{ single_producto.descripcion }}</p>
+
+              <hr>
+              <div class="row">
+                <div class="item-option-select">
+                  <h6>Elige el modelo</h6>
+                  <select name="modelo" class="form-control">
+                    <option value="Rojo">Rojo</option>
+                    <option value="Plomo">Plomo</option>
+                    <option value="Negro">Negro</option>
+                  </select>
                 </div>
-              </div>
-            </div> <!-- row.// -->
-            <hr>
-            {% if single_producto.stock <= 0 %} <h5 class="text-danger">Sin stock</h5>
-              {% else %}
-              {% if in_carrito %}
-              <a href="#" class="btn  btn-success"> <span class="text">Añadido al carro</span> <i
-                  class="fas fa-check"></i> </a>
-                  <a href="{% url 'carritoCompra' %}" class="btn  btn-outline-warning"> <span class="text">Ver carrito </span> <i
-                    class="fas fa-eye"></i> </a>
-              {% else %}
-              <a href="{% url 'add_carrito' single_producto.id %}" class="btn  btn-warning"> <span class="text">añadir
-                  al carro</span> <i class="fas fa-shopping-cart"></i> </a>
-              {% endif %}
-              {% endif %}
-          </article> <!-- product-info-aside .// -->
+              </div> <!-- row.// -->
+              <div class="row">
+                <div class="item-option-select" >
+                  <h6>Selecciona la talla</h6>
+                  <select name="size" class="form-control">
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="Extra Large">Extra Large</option>
+                  </select>
+                  
+                </div>
+              </div> <!-- row.// -->
+              <hr>
+              {% if single_producto.stock <= 0 %} <h5 class="text-danger">Sin stock</h5>
+                {% else %}
+                {% if in_carrito %}
+                <a href="#" class="btn  btn-success"> <span class="text">Añadido al carro</span> <i
+                    class="fas fa-check"></i> </a>
+                <a href="{% url 'carritoCompra' %}" class="btn  btn-outline-warning"> <span class="text">Ver carrito
+                  </span> <i class="fas fa-eye"></i> </a>
+                {% else %}
+                <button type="submit"class="btn  btn-warning"> <span class="text">añadir
+                    al carro</span> <i class="fas fa-shopping-cart"></i> </button>
+                {% endif %}
+                {% endif %}
+            </article> <!-- product-info-aside .// -->
+          </form>
         </main> <!-- col.// -->
       </div> <!-- row.// -->
     </div> <!-- card.// -->

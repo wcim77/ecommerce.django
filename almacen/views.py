@@ -4,21 +4,32 @@ from carts.models import CarritoItem
 from carts.views import _carrito_id
 from categoria.models import Categoria
 from .models import Producto
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 
 def almacen(request, categoria_slug=None):
     categorias = None
     productos = None
 
     if categoria_slug is not None:
-        categorias = get_object_or_404(Categoria, slug=categoria_slug)
-        productos = Producto.objects.filter(categoria=categorias, is_available=True)
+        categorias = get_object_or_404(Categoria, slug=categoria_slug) #obtenemos la categoria
+        productos = Producto.objects.filter(categoria=categorias, is_available=True)    #obtenemos los productos de la categoria
+        producto_count = productos.count() #contamos los productos
+        paginator = Paginator(productos, 6)
+        page = request.GET.get('page')
+        paged_productos = paginator.get_page(page)
         producto_count = productos.count()
+
+
     else:
-        productos = Producto.objects.all().filter(is_available=True)
+        productos = Producto.objects.all().filter(is_available=True).order_by('id') #obtenemos todos los productos
+        paginator = Paginator(productos, 3)
+        page = request.GET.get('page')
+        paged_productos = paginator.get_page(page)
         producto_count = productos.count()
 
     context = { 
-        'productos': productos,
+        'productos':  paged_productos,
         'producto_count': producto_count,
     }
 
