@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'categoria',
     'cuentas',
     'almacen',
+    'carts',
 ]
 #jazzminn settings
 JAZZMIN_SETTINGS ={
