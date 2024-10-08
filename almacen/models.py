@@ -24,19 +24,32 @@ class Producto(models.Model):
         return self.nombre_producto
 
 
+
+class VariacionManager(models.Manager):
+    def modelos(self):
+        return super(VariacionManager,self).filter(variacion_categoria='modelo',is_active=True)
+    
+    def sizes(self):
+        return super(VariacionManager,self).filter(variacion_categoria='size',is_active=True)
+    
+
 variacion_categoria_choice = (
     ('modelo','modelo'),
     ('size','size'),
 )
+
+
 class Variacion(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
-    variacion_categoria = models.CharField(max_length=50,choices=variacion_categoria_choice)
+    variacion_categoria = models.CharField(max_length=100, choices=variacion_categoria_choice)
     valor_variacion = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     created_date =models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
 
+    objects = VariacionManager()
+
     def __unicode__(self): 
-        return self.producto
+        return self.valor_variacion
 
 

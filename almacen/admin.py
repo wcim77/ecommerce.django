@@ -9,5 +9,11 @@ class ProductoAdmin(admin.ModelAdmin):
     list_filter = ('is_available','created_date','modified_date')
     list_editable = ('precio','stock','is_available')
     
+
+class VariacionAdmin(admin.ModelAdmin):
+    list_display = ('producto','variacion_categoria','valor_variacion','is_active')
+    list_filter = ('producto','variacion_categoria','valor_variacion','is_active')
+    list_editable = ('is_active',)
+
 admin.site.register(Producto,ProductoAdmin)
-admin.site.register(Variacion)
+admin.site.register(Variacion,VariacionAdmin)

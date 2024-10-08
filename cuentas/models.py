@@ -39,7 +39,7 @@ class MiCuentaManager(BaseUserManager):
         return user
     
 
-class Cuenta(AbstractBaseUser,PermissionsMixin):
+class Cuenta(AbstractBaseUser,PermissionsMixin):  
     email = models.EmailField(unique=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)

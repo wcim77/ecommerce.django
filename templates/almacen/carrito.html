@@ -33,7 +33,13 @@
                                         <div class="aside"><img src="{{carrito_item.producto.imagen.url}}"class="img-sm"></div>
                                         <figcaption class="info">
                                             <a href="{{ carrito_item.producto.get_url }}" class="title text-dark">{{ carrito_item.producto.nombre_producto}}</a>
-                                            <p class="text-muted small">Color: 25 Mpx <br> size: Canon</p>
+                                            <p class="text-muted small">
+                                            {% if carrito_item.variaciones.all%}
+                                                {% for item in cart_item.variaciones.all%}
+                                                   {{ item.variacion_categoria }}: {{ item.valor_variacion }}
+                                                {% endfor %}    
+                                            {% endif%}
+                                            </p>
                                         </figcaption>
                                     </figure>
                                 </td>

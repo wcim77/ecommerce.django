@@ -5,6 +5,7 @@ from carts.views import _carrito_id
 from categoria.models import Categoria
 from .models import Producto
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
 
 
 def almacen(request, categoria_slug=None):
@@ -35,7 +36,7 @@ def almacen(request, categoria_slug=None):
 
     return render(request, 'almacen/almacen.html', context)
 
-def producto_detalle(request, categoria_slug, producto_slug):
+def producto_detalle(request, categoria_slug, producto_slug): #funcion para ver los detalles de un producto
     try:
         single_producto = Producto.objects.get(categoria__slug=categoria_slug, slug=producto_slug)
         in_carrito =CarritoItem.objects.filter(carrito__carrito_id=_carrito_id(request),producto=single_producto).exists() #verificamos si el producto esta en el carrito
@@ -46,3 +47,18 @@ def producto_detalle(request, categoria_slug, producto_slug):
         'in_carrito': in_carrito,
     }
     return render(request, 'almacen/producto_detalle.html', context)
+
+def buscar(request):
+    productos = Producto.objects.none()  # Inicializa productos como un QuerySet vacío
+    categoria = Categoria.objects.all() 
+    if 'keyword'in request.GET:
+        keyword = request.GET['keyword']
+        if keyword:
+            productos = Producto.objects.order_by('-created_date').filter(Q(descripcion__icontains=keyword) | Q(nombre_producto__icontains=keyword)) #buscamos los productos que contengan la palabra clave
+            categoria = Categoria.objects.all()
+    context = {
+        'productos': productos,
+        'categorias': categoria,
+        'producto_count': productos.count(),
+    }
+    return render(request, 'almacen/almacen.html',context)
