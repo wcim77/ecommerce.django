@@ -14,8 +14,6 @@ def _carrito_id(request):
 
 
     
-
-
 def add_carrito(request,producto_id):
     producto = Producto.objects.get(id=producto_id) #con esto obtenemos el productos
     producto_variaciones = [] #creamos una lista vacia
@@ -25,7 +23,7 @@ def add_carrito(request,producto_id):
             value = request.POST[key]
             
             try:
-                variacion = variacion.objects.get(producto=producto,variacion_categoria__iexact=key,valor_variacion__iexact=value)
+                variacion = Variacion.objects.get(producto=producto,variacion_categoria__iexact=key,valor_variacion__iexact=value)
                 producto_variaciones.append(variacion)
             except:
                 pass
@@ -44,7 +42,6 @@ def add_carrito(request,producto_id):
             carrito_item.variaciones.clear()
             for item in producto_variaciones:
                 carrito_item.variaciones.add(item) #si hay variaciones se agregan al item del carrito
-
         carrito_item.cantidad += 1 #si ya existe el producto en el carrito se le suma uno
         carrito_item.save()
     except CarritoItem.DoesNotExist: 
@@ -54,7 +51,6 @@ def add_carrito(request,producto_id):
             carrito = cart,
         )
         if len (producto_variaciones) > 0:
-            carrito_item.variaciones.clear()
             for item in producto_variaciones:
                 carrito_item.variaciones.add(item)
         carrito_item.save() #si no existe el producto en el carrito se crea uno nuevo
@@ -96,7 +92,12 @@ def  carritoCompra(request, total=0, cantidad=0, carrito_items=None):
         impuesto = (19 * total)/100 #calculamos el impuesto chileno
         grand_total = total + impuesto #calculamos el total con impuesto
      except Carrito.DoesNotExist: #si no existe el carrito no hacemos nada
-         pass
+        carrito_items = []
+        impuesto = 0
+        grand_total = 0
+        total = 0
+        cantidad = 0
+      
      context = {
          'carrito_items': carrito_items,
          'total': total,

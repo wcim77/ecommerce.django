@@ -43,31 +43,10 @@ INSTALLED_APPS = [
     'almacen',
     'carts',
 ]
-#jazzminn settings
-JAZZMIN_SETTINGS ={
-    "welcome_sign": "Bienvenido al panel de administrativo",
-    "site_tittle":"Ecommerce",
-    "topmenu_links": [
 
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Inicio",  "url": "admin:index", "permissions": ["auth.view_user"]},
 
-        # external url that opens in a new window (Permissions can be added)
-        {"name": "Soporte", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
 
-        # model admin to link to (Permissions checked against model)
-        {"model": "auth.User"},
 
-        # App with dropdown menu to all its models pages (Permissions checked against models)
-        {"app": "books"},
-    ],
-
-}
-#TEma jazzmin
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text":False,
-    "theme": "darkly",
-}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -173,3 +152,59 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#jazzminn settings
+JAZZMIN_SETTINGS ={
+    "site_tittle":"Ecommerce",
+    "welcome_sign": "Panel de administración ",
+    "site_brand": "Enfixate Store",
+    "copyright": "Enfixate Store",
+    "login_logo": None,
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Inicio",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Soporte", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+        {"model": "auth.Group"},
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "almacen", "models": ["producto", "categoria"]},
+    ],"related_modal_active": False,
+
+}
+#TEma jazzmin
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}

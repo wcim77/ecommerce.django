@@ -6,6 +6,7 @@ from categoria.models import Categoria
 from .models import Producto
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
+from django.core.cache import cache
 
 
 def almacen(request, categoria_slug=None):
@@ -50,15 +51,20 @@ def producto_detalle(request, categoria_slug, producto_slug): #funcion para ver 
 
 def buscar(request):
     productos = Producto.objects.none()  # Inicializa productos como un QuerySet vacío
-    categoria = Categoria.objects.all() 
-    if 'keyword'in request.GET:
-        keyword = request.GET['keyword']
+    categoria = Categoria.objects.all()  # obtenemos todas las categorias
+    if 'keyword' in request.GET:         # si se envia una palabra clave
+        keyword = request.GET['keyword'] # obtenemos la palabra clave
         if keyword:
-            productos = Producto.objects.order_by('-created_date').filter(Q(descripcion__icontains=keyword) | Q(nombre_producto__icontains=keyword)) #buscamos los productos que contengan la palabra clave
+            productos = Producto.objects.order_by('-created_date').filter(
+                Q(descripcion__icontains=keyword) | Q(nombre_producto__icontains=keyword)
+            )  # buscamos los productos que contengan la palabra clave
             categoria = Categoria.objects.all()
+            if productos.exists():
+                cache.clear()  # borra el cache si se encuentran productos
+
     context = {
         'productos': productos,
         'categorias': categoria,
         'producto_count': productos.count(),
     }
-    return render(request, 'almacen/almacen.html',context)
+    return render(request, 'almacen/almacen.html', context)

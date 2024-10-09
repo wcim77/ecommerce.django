@@ -34,11 +34,11 @@
                                         <figcaption class="info">
                                             <a href="{{ carrito_item.producto.get_url }}" class="title text-dark">{{ carrito_item.producto.nombre_producto}}</a>
                                             <p class="text-muted small">
-                                            {% if carrito_item.variaciones.all%}
-                                                {% for item in cart_item.variaciones.all%}
-                                                   {{ item.variacion_categoria }}: {{ item.valor_variacion }}
+                                            {% if carrito_item.variaciones.all %}
+                                                {% for item in carrito_item.variaciones.all %}
+                                                   {{ item.variacion_categoria | capfirst}} :{{ item.valor_variacion | capfirst }} <br>
                                                 {% endfor %}    
-                                            {% endif%}
+                                            {% endif %}
                                             </p>
                                         </figcaption>
                                     </figure>
