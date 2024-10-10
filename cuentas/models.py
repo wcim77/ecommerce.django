@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
-
+from cuentas.choices import generos
 # Create your models here.
 class MiCuentaManager(BaseUserManager):
     def create_user(self, nombre, apellido,email,username, password=None):
@@ -41,12 +41,14 @@ class MiCuentaManager(BaseUserManager):
 
 class Cuenta(AbstractBaseUser,PermissionsMixin):  
     email = models.EmailField(unique=True)
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    username = models.CharField(max_length=50, unique=True)
+    nombre = models.CharField(max_length=100,verbose_name='Nombre')
+    apellido = models.CharField(max_length=100,verbose_name='Apellido')
+    username = models.CharField(max_length=50, unique=True,verbose_name='Nombre de Usuario')
+    fecha_nacimiento = models.DateField(blank=True, null=True,verbose_name='Fecha de Nacimiento')
+    genero= models.CharField(max_length=1,choices=generos,default='M')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
-    phone_number =models.CharField(max_length=14,blank=True)
+    telefono =models.CharField(max_length=14,blank=True)
 
     #requeride
     date_joined = models.DateTimeField(auto_now_add=True)
