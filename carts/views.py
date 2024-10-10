@@ -11,12 +11,10 @@ def _carrito_id(request):
     if not carrito:
         carrito = request.session.create()
     return carrito
-
-
-    
+#Agregar al carrito  
 def add_carrito(request,producto_id):
     producto = Producto.objects.get(id=producto_id) #con esto obtenemos el productos
-    producto_variaciones = [] #creamos una lista vacia
+    producto_variacion = [] #creamos una lista vacia
     if request.method == 'POST':
         for item in request.POST:
             key = item
@@ -24,7 +22,7 @@ def add_carrito(request,producto_id):
             
             try:
                 variacion = Variacion.objects.get(producto=producto,variacion_categoria__iexact=key,valor_variacion__iexact=value)
-                producto_variaciones.append(variacion)
+                producto_variacion.append(variacion)
             except:
                 pass
   
@@ -35,34 +33,58 @@ def add_carrito(request,producto_id):
             carrito_id=_carrito_id(request)
             )
     cart.save()
+    #creamos una variable para verificar si el producto ya esta en el carrito
+    is_carrito_item_exists = CarritoItem.objects.filter(producto=producto,carrito=cart).exists() #verificamos si el producto ya esta en el carrito
+    if is_carrito_item_exists:
+        carrito_item = CarritoItem.objects.filter(producto=producto,carrito=cart)
+        ex_var_list=[]
+        id = []
+        #recorremos los items del carrito
+        for item in carrito_item:
+            existing_variacion= item.variaciones.all()
+            ex_var_list.append(list(existing_variacion))
+            id.append(item.id)
 
-    try:
-        carrito_item = CarritoItem.objects.get(producto=producto,carrito=cart)
-        if len (producto_variaciones) > 0:
-            carrito_item.variaciones.clear()
-            for item in producto_variaciones:
-                carrito_item.variaciones.add(item) #si hay variaciones se agregan al item del carrito
-        carrito_item.cantidad += 1 #si ya existe el producto en el carrito se le suma uno
-        carrito_item.save()
-    except CarritoItem.DoesNotExist: 
+        print(ex_var_list)    
+        #si el producto ya esta en el carrito aumentamos la cantidad
+        if producto_variacion in ex_var_list:
+            #aumentamos la cantidad
+            index=ex_var_list.index(producto_variacion)
+            item_id= id[index]
+            item = CarritoItem.objects.get(producto=producto,id=item_id)
+            item.cantidad += 1
+            item.save()
+        #si el producto ya esta en el carrito pero con variaciones diferentes
+        else:
+            carrito_item = CarritoItem.objects.create(
+                producto=producto,
+                cantidad=1,
+                carrito=cart,
+            )
+            if len (producto_variacion) > 0:
+                carrito_item.variaciones.clear()
+                for variacion in producto_variacion:
+                    carrito_item.variaciones.add(variacion) #si hay variaciones se agregan al item del carrito
+            carrito_item.save()
+    else:
         carrito_item = CarritoItem.objects.create(
             producto = producto,
             cantidad = 1,
             carrito = cart,
         )
-        if len (producto_variaciones) > 0:
-            for item in producto_variaciones:
-                carrito_item.variaciones.add(item)
+        if len (producto_variacion) > 0:
+            carrito_item.variaciones.clear()
+            for variacion in producto_variacion:
+                carrito_item.variaciones.add(variacion)
         carrito_item.save() #si no existe el producto en el carrito se crea uno nuevo
-
     return redirect('carritoCompra')
 
-
-def remove_carrito(request, producto_id):
+#Borrar del carrito
+def remove_carrito(request, producto_id,carrito_item_id):
         carrito = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos el carrito
         producto = get_object_or_404(Producto, id=producto_id) #obtenemos el producto
         try:
-            carrito_item = CarritoItem.objects.get(producto=producto, carrito=carrito) #obtenemos el item del carrito
+            carrito_item = CarritoItem.objects.get(producto=producto, carrito=carrito,id=carrito_item_id) #obtenemos el item del carrito
             if carrito_item.cantidad > 1:
                 carrito_item.cantidad -= 1
                 carrito_item.save()
@@ -72,16 +94,18 @@ def remove_carrito(request, producto_id):
             pass
         return redirect('carritoCompra')
 
-def delete_carrito_item(request, producto_id):
+#Eliminar del carrito
+def delete_carrito_item(request, producto_id,carrito_item_id):
         carrito = Carrito.objects.get(carrito_id=_carrito_id(request))  # obtenemos el carrito
         producto = get_object_or_404(Producto, id=producto_id)  # obtenemos el producto
         try:
-            carrito_item = CarritoItem.objects.get(producto=producto, carrito=carrito)  # obtenemos el item del carrito
+            carrito_item = CarritoItem.objects.get(producto=producto, carrito=carrito,id=carrito_item_id)  # obtenemos el item del carrito
             carrito_item.delete()  # eliminamos el item del carrito
         except CarritoItem.DoesNotExist:  # si no existe el item no hacemos nada
             pass
         return redirect('carritoCompra')
 
+#Vista del carrito
 def  carritoCompra(request, total=0, cantidad=0, carrito_items=None):
      try:
         carrito = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos el carrito

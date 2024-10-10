@@ -42,9 +42,11 @@
                         </div>
                     </form>
                 </div>
+                <div>
+                    <a href="{%  url 'login' %}"   type="button" class="btn btn-outline-light me-2">login</a> <span class = "widget-header"> | </span>
+                    <a href="{%  url 'registerUser'   %}"   type="button" class="btn btn-outline-light me-2">registerUser</a>
+                </div>
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
-                    <button type="button" class="btn btn-warning">Sign-up</button>
                     <a href="{% url 'carritoCompra'%}" class="widget-header pl-3 ml-3">
                         <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
                         <span class="badge badge-pill badge-danger notify">{{carrito_count}}</span>
