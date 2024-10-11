@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+hi {{ user.nombre }},
+
+Por favor, haga clic en el siguiente enlace para verificar su dirección de correo electrónico:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Gracias por registrarte en nuestra tienda.
+
+{% endautoescape %}

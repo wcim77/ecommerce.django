@@ -31,12 +31,12 @@
                     <a href="{{ producto.get_url }}" class="img-wrap">
                     <img src="{{ producto.imagen.url }}" style="width: 100%;"></a>
                     <figcaption class="info-wrap">
-                        <a href="{{ producto.get_url }}" class="title">{{producto.nombre_producto}}</a>
-                        <div class="price mt-1">${{producto.precio}}</div> <!-- price-wrap.// -->
+                        <a href="{{ producto.get_url }}" class="title">{{ producto.nombre_producto }}</a>
+                        <div class="price mt-1">${{ producto.precio }}</div> <!-- price-wrap.// -->
                     </figcaption>
                 </div>
             </div> <!-- col.// -->
-            {% endfor%}
+            {% endfor %}
         </div> <!-- row.// -->
 
     </div><!-- container // -->

@@ -208,3 +208,19 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success"
     }
 }
+
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.INFO: "alert-info",
+    
+}
+
+#configuracion de email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_PORT= 587
+EMAIL_HOST_USER= 'inostrozaw66@gmail.com' #correo de envio
+EMAIL_HOST_PASSWORD= 'euaaepzloaogqhmc ' #contraseña de correo
+EMAIL_USE_TLS= True

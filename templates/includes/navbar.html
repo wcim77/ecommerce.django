@@ -42,10 +42,22 @@
                         </div>
                     </form>
                 </div>
-                <div>
-                    <a href="{%  url 'login' %}"   type="button" class="btn btn-outline-light me-2">login</a> <span class = "widget-header"> | </span>
-                    <a href="{%  url 'registerUser'   %}"   type="button" class="btn btn-outline-light me-2">registerUser</a>
+                <div class="d-flex justify-content-end mb-3 mb-lg-0">
+                    {%  if user.id is  None %}
+                    <div class="widget-header">
+                        <small class="title text-white">Bienvenido </small>
+                        <a href="{%  url 'login' %}"   type="button" class="btn btn-outline-light me-2 text-white">login</a> <span class = "widget-header"> 
+                        <a href="{%  url 'registerUser'   %}"   type="button" class="btn btn-outline-light me-2 text-white">register User</a> 
+                    </div>
+                    {% else %}
+                    <div class="widget-header">
+                        <small class="title text-white">Bienvenido {{user.nombre}}</small>
+                        <a href="{% url 'panel' %}"   type="button" class="btn btn-outline-light me-2">Panel</a> <span class = "widget-header"> 
+                        <a href="{%  url 'logout'  %}"   type="button" class="btn btn-outline-light me-2">Salir</a>  
+                    </div>
+                    {% endif %}
                 </div>
+                
                 <div class="text-end">
                     <a href="{% url 'carritoCompra'%}" class="widget-header pl-3 ml-3">
                         <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
