@@ -1,11 +1,11 @@
 {% load static %}
-
+{% load custom_filters %}
 <header class="p-2 bg-warning text-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="{% url 'inicio'%}" class="brand-wrap">
                 <img class="logo" width="150" height="auto" src="{% static 'images/logo1.png' %}">
-            </a> <!- <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            </a><a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap" />
                 </svg>
@@ -45,9 +45,9 @@
                 <div class="d-flex justify-content-end mb-3 mb-lg-0">
                     {%  if user.id is  None %}
                     <div class="widget-header">
-                        <small class="title text-white">Bienvenido </small>
-                        <a href="{%  url 'login' %}"   type="button" class="btn btn-outline-light me-2 text-white">login</a> <span class = "widget-header"> 
-                        <a href="{%  url 'registerUser'   %}"   type="button" class="btn btn-outline-light me-2 text-white">register User</a> 
+                        <small class="title text-white">Bienvenido a nuestra tienda! </small>
+                        <a href="{%  url 'login' %}"   type="button" class="btn btn-outline-light me-2 text-white">Iniciar</a> <span class = "widget-header"> 
+                        <a href="{%  url 'registerUser'   %}"   type="button" class="btn btn-outline-light me-2 text-white">Registrarse</a> 
                     </div>
                     {% else %}
                     <div class="widget-header">
@@ -60,7 +60,7 @@
                 
                 <div class="text-end">
                     <a href="{% url 'carritoCompra'%}" class="widget-header pl-3 ml-3">
-                        <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+                        <div class="icon icon-sm rounded-circle border text-white"><i class="fa fa-shopping-cart"></i></div>
                         <span class="badge badge-pill badge-danger notify">{{carrito_count}}</span>
                     </a>
                 </div>

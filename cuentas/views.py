@@ -61,10 +61,10 @@ def login(request): #login
 
         if user is not None:
             auth.login (request, user)
-            #messages.error(request,'El correo o la contraseña son incorrectos')
-            return redirect('inicio')
+            messages.success(request,'Ya ha iniciado sesion.' )#messages.error(request,'El correo o la contraseña son incorrectos')
+            return redirect('panel')
         else:   
-            messages.error(request,'El correo o la contraseña son incorrectos')
+            messages.error(request,'El correo o la contraseña son incorrectos.')
             return redirect('login')
     return render(request,'cuentas/iniciarSesion.html')
 
@@ -91,7 +91,67 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'El enlace de activación es inválido.')
         return redirect('registerUser')
-    
+
+
+
 @login_required(login_url='login')    
 def panel(request):
     return render(request,'cuentas/panel.html')
+
+def forgotPassword(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if Cuenta.objects.filter(email=email).exists():
+            user = Cuenta.objects.get(email__exact=email)
+
+            #reset password
+            current_site = get_current_site(request)
+            mail_subject = 'Restablecer contraseña'
+            message = render_to_string('cuentas/reset_password_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])  
+            send_email.send()
+
+            messages.success(request,'El enlace de restablecimiento de contraseña ha sido enviado a su correo.')
+            return redirect('login')    
+        else:
+            messages.error(request, 'La cuenta no está registrado.')
+            return redirect('forgotPassword')
+    return render(request,'cuentas/olvidoContrasena.html')
+
+def resetpassword_validate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Cuenta._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Cuenta.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid'] = uid
+        messages.success(request, 'Por favor, restablezca su contraseña.')
+        return redirect('resetPassword')
+    else:
+        messages.error(request, 'Este enlace ha caducado.')
+        return redirect('login')
+    
+def resetPassword(request):
+    if request.method =='POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = Cuenta.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'La contraseña ha sido restablecida.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Las contraseñas no coinciden.')
+            return redirect('resetPassword')
+    else: 
+        return render(request,'cuentas/resetPassword.html')

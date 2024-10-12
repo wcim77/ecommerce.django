@@ -15,9 +15,9 @@ def almacen(request, categoria_slug=None):
 
     if categoria_slug is not None:
         categorias = get_object_or_404(Categoria, slug=categoria_slug) #obtenemos la categoria
-        productos = Producto.objects.filter(categoria=categorias, is_available=True)    #obtenemos los productos de la categoria
+        productos = Producto.objects.filter(categoria=categorias, is_available=True).order_by('id')    #obtenemos los productos de la categoria
         producto_count = productos.count() #contamos los productos
-        paginator = Paginator(productos, 6)
+        paginator = Paginator(productos, 3)
         page = request.GET.get('page')
         paged_productos = paginator.get_page(page)
         producto_count = productos.count()

@@ -4,72 +4,89 @@
 <section class="section-content padding-y">
 
     <!-- ============================ COMPONENT REGISTER   ================================= -->
-        <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="max-width:520px; margin-top:40px;">
+    <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="max-width:520px; margin-top:40px;">
 
-          <article class="card-body">
+        <article class="card-body">
             {% include 'includes/alertas.html'%}
-            <header class="mb-4 text-center"><h4 class="card-title">Sign up</h4></header>
+            <header class="mb-4 text-center">
+                <h4 class="card-title">Registrarse</h4>
+            </header>
             <form acction="{% url 'registerUser' %}" method="POST">
                 {% csrf_token %}
 
 
-                
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <label>Nombre</label>
-                              {{ form.nombre}}
-                        </div> <!-- form-group end.// -->
-                        <div class="col form-group">
-                            <label>Apellido</label>
-                              {{ form.apellido}}
-                        </div> <!-- form-group end.// -->
-                    </div> <!-- form-row end.// -->
-                  
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label>Numero de telefono</label>
-                          {{ form.telefono}}
-                        </div> 
-                        <div class="form-group col-md-6">
-                            <label>Correo electronico</label>
-                            {{ form.email}}
-                          </div> 
-                    </div> 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Fecha de nacimiento</label>
-                            {{ form.fecha_nacimiento}}
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Sexo</label>
-                            {{ form.genero}}
-                        </div>
+
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label>Nombre</label>
+                        {{ form.nombre}}
+                    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Apellido</label>
+                        {{ form.apellido}}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Numero de telefono</label>
+                        {{ form.telefono}}
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Create password</label>
-                            {{ form.password}}
-                        </div> <!-- form-group end.// --> 
-                        <div class="form-group col-md-6">
-                            <label>Repeat password</label>
-                            {{form.verificar_password}}
-                        </div> <!-- form-group end.// -->  
+                    <div class="form-group col-md-6">
+                        <label>Correo electronico</label>
+                        {{ form.email}}
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block"> Registrarse </button>
-                    </div> <!-- form-group// -->      
-                        {{ form.errors }}
-                        {{ form.non_field_errors }}
-                </form>
-            </article><!-- card-body.// -->
-        </div> <!-- card .// -->
-        <p class="text-center mt-4">Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar sesion</a></p>
-        <br><br>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Fecha de nacimiento</label>
+                        {{ form.fecha_nacimiento}}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Sexo</label>
+                        {{ form.genero}}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Crea contraseña</label>
+                        {{ form.password}}
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Repita contraseña</label>
+                        {{form.verificar_password}}
+                    </div> <!-- form-group end.// -->
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning btn-block"> Registrarse </button>
+                </div> <!-- form-group// -->
+                {{ form.errors }}
+                {{ form.non_field_errors }}
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar sesion</a></p>
+    <br><br>
     <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
-    
-    
-    </section>
-    <!-- ========================= SECTION CONTENT END// ========================= -->
-   
+  
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+ <!-- Spinner de carga -->
+ <div id="loading-spinner" class="d-none" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div class="spinner-border text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('form');
+    var spinner = document.getElementById('loading-spinner');
+
+    form.addEventListener('submit', function() {
+        spinner.classList.remove('d-none');
+    });
+});
+</script>
 
 {% endblock%}

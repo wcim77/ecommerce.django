@@ -4,38 +4,22 @@
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-conten padding-y" style="min-height:84vh">
 
-
     <!-- ============================ COMPONENT LOGIN   ================================= -->
-
-
-    {% if request.GET.command == 'verification' %}
-
-    <div class="container mx-auto alert alert-info text-center" role ="alert" style="max-width: 1024px; margin-top:100px;">
-    El registro ha sido exitoso! Por favor, verifica tu correo para activar tu cuenta.[{{request.GET.email}}]
-    <br> </br>
-    Ya estas verificado? <a href="{% url 'login' %}">Iniciar sesion</a>
-    </div>
-
-{% else %}
     <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="max-width: 380px; margin-top:100px;">
     {% include 'includes/alertas.html'%}
         <div class="card-body">
-            <h4 class="card-title mb-4 text-center">Iniciar sesion</h4>
-            <form action="{% url 'login' %}" method="POST">
+            <h4 class="card-title mb-4 text-center">Olvido contraseña?</h4>
+            <form action="{% url 'forgotPassword' %}" method="POST">
             {% csrf_token %}
                 <div class="form-group">
                     <input type="email" class="form-control" placeholder="Email Address" name="email">
                 </div> <!-- form-group// -->
+               
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                </div> <!-- form-group// -->
-
-                <div class="form-group">
-                    <a href="{% url 'forgotPassword'%}" class="float-right">Olvidaste tu contraseña?</a>
-
+                    <a href="{% url 'login' %}" class="float-right">No olvidaste tu contraseña? Iniciar sesion</a>
                 </div> <!-- form-group form-check .// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-warning btn-block"> Iniciar sesion </button>
+                    <button type="submit" class="btn btn-warning btn-block"> Enviar </button>
                 </div> <!-- form-group// -->
             </form>
         </div> <!-- card-body.// -->
@@ -44,7 +28,7 @@
     <p class="text-center mt-4">No tiene cuenta? <a href="{% url 'registerUser' %}">Registrarse</a></p>
     <br><br>
     <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
-{% endif %}
+
 
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
