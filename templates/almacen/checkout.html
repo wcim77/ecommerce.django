@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+
+        <div class="row">
+            <aside class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Dirección de facturación</h4>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Nombre</label>
+                                    <input type="text" name="nombre" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Apellido</label>
+                                    <input type="text" name="apellido" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Email</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Número celular</label>
+                                    <input type="text" name="numero_celular" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Dirección línea 1</label>
+                                    <input type="text" name="direccion_linea_1" class="form-control" required placeholder="ej: Rio lempa 1944">
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Dirección línea 2</label>
+                                    <input type="text" name="direccion_linea_2" class="form-control" placeholder="ej: Rio lempa 1944">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Ciudad</label>
+                                    <input type="text" name="ciudad" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Estado</label>
+                                    <input type="text" name="estado" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">País</label>
+                                    <input type="text" name="pais" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Código postal</label>
+                                    <textarea name="codigo_postal" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                       
+                    </div>
+
+            </aside> 
+            <aside class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-dark">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Productos</th>
+                                    <th scope="col" width="120">Cantidad</th>
+                                    <th scope="col" width="120">Precio</th>
+                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for carrito_item in carrito_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="{{carrito_item.producto.imagen.url}}"class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <a href="{{ carrito_item.producto.get_url }}" class="title text-dark">{{ carrito_item.producto.nombre_producto}}</a>
+                                                <p class="text-muted small">
+                                                {% if carrito_item.variaciones.all %}
+                                                    {% for item in carrito_item.variaciones.all %}
+                                                       {{ item.variacion_categoria | capfirst}} :{{ item.valor_variacion | capfirst }} <br>
+                                                    {% endfor %}    
+                                                {% endif %}
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <!-- col.// -->
+                                        <div class="col">
+                                           <label for="">{{ carrito_item.cantidad}}</label>
+                                        </div> <!-- col.// -->
+                                    </td>
+    
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">${{ carrito_item.sub_total}}</var>
+                                            <small class="text-muted"> ${{carrito_item.producto.precio}}</small>
+                                        </div> <!-- price-wrap .// -->
+                                    </td>
+                                  
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" name="submit" class="btn btn-warning btn-block">Ordenar pedido</button>
+                        <a href="{% url 'almacen'%}" class="btn btn-light btn-block">Continuar viendo</a>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+            </form>
+            </aside> <!-- col.// -->
+
+       
+        </div> <!-- row.// -->
+  
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

@@ -101,7 +101,7 @@
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="./place-order.html" class="btn btn-warning btn-block"> Finalizar compra</a>
+                        <a href="{% url 'checkout'%}" class="btn btn-warning btn-block">Finalizar pedido</a>
                         <a href="{% url 'almacen'%}" class="btn btn-light btn-block">Continuar viendo</a>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->

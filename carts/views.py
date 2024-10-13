@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 
 from almacen.models import Producto, Variacion
 from carts.models import Carrito, CarritoItem
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def _carrito_id(request):
@@ -131,4 +131,34 @@ def  carritoCompra(request, total=0, cantidad=0, carrito_items=None):
 
      }  #pasamos los items del carrito, el total y el contador
      return render(request,'almacen/carrito.html',context) #retornamos el template con el contexto
+
+
+#Vista de checkout
+@login_required(login_url='login')
+def checkout(request,total=0, cantidad=0, carrito_items=None):
+    try:
+        carrito = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos el carrito
+        carrito_items = CarritoItem.objects.filter(carrito=carrito, is_active=True) #obtenemos los items del carrito
+        for carrito_item in carrito_items: #recorremos los items del carrito
+            total += (carrito_item.producto.precio * carrito_item.cantidad) #calculamos el total
+            cantidad += carrito_item.cantidad #calculamos el contador
+        impuesto = (19 * total)/100 #calculamos el impuesto chileno
+        grand_total = total + impuesto #calculamos el total con impuesto
+    except Carrito.DoesNotExist: #si no existe el carrito no hacemos nada
+        carrito_items = []
+        impuesto = 0
+        grand_total = 0
+        total = 0
+        cantidad = 0
+      
+    context = {
+         'carrito_items': carrito_items,
+         'total': total,
+         'contador': cantidad,
+         'impuesto' : impuesto,
+         'grand_total': grand_total,
+
+     } 
+    return render(request,'almacen/checkout.html',context) #retornamos el template de checkout
+
 
