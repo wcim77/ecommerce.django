@@ -2,6 +2,8 @@ from enum import auto
 from venv import logger
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from carts.models import Carrito, CarritoItem
+from carts.views import _carrito_id
 from cuentas.forms import RegisterForm
 from cuentas.models import Cuenta
 from django.contrib import auth
@@ -60,6 +62,41 @@ def login(request): #login
         user = auth.authenticate( email=email, password=password)
 
         if user is not None:
+            try:
+                carrito = Carrito.objects.get(carrito_id=_carrito_id(request))
+                is_carrito_item_exists = CarritoItem.objects.filter(carrito=carrito).exists()
+                if is_carrito_item_exists:
+                    carrito_item = CarritoItem.objects.filter(carrito=carrito)
+
+                    #obtenemos los items del carrito del usuario
+                    producto_variacion = []
+                    for item in carrito_item:
+                        variacion = item.variaciones.all()
+                        producto_variacion.append(list(variacion))
+                    #obtenemos los items del carrito del usuario
+                    if is_carrito_item_exists:
+                        carrito_item = CarritoItem.objects.filter(user=user)
+                        ex_var_list=[]
+                        id = []
+                        for item in carrito_item:
+                            existing_variacion= item.variaciones.all()
+                            ex_var_list.append(list(existing_variacion))
+                            id.append(item.id)
+                        for pr in producto_variacion:
+                            if pr in ex_var_list:
+                                index = ex_var_list.index(pr)
+                                item_id = id[index]
+                                item = CarritoItem.objects.get(id=item_id)
+                                item.cantidad += 1
+                                item.user = user
+                                item.save()
+                            else:
+                                carrito_item = CarritoItem.objects.filter(carrito=carrito)
+                                for item in carrito_item:
+                                    item.user = user
+                                    item.save()
+            except:
+                pass
             auth.login (request, user)
             messages.success(request,'Ya ha iniciado sesion.' )#messages.error(request,'El correo o la contraseña son incorrectos')
             return redirect('panel')

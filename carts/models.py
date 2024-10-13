@@ -1,6 +1,7 @@
 from django.db import models
 
 from almacen.models import Producto, Variacion
+from cuentas.models import Cuenta
 
 # Create your models here.
 
@@ -13,9 +14,10 @@ class Carrito(models.Model):
     
 
 class CarritoItem(models.Model):
+    user = models.ForeignKey(Cuenta,on_delete=models.CASCADE,null=True)
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
     variaciones = models.ManyToManyField(Variacion, blank=True)
-    carrito= models.ForeignKey(Carrito,on_delete=models.CASCADE)
+    carrito= models.ForeignKey(Carrito,on_delete=models.CASCADE,null=True)
     cantidad = models.IntegerField()
     is_active = models.BooleanField(default=True)
 
