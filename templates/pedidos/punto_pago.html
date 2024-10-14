@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+        <h4 class="text-center mb-10">Revise Su Pedido y Efectue El Pago</h4>
+        <div class="row">
+       
+            <aside class="col-lg-8">
+                <div class="card">
+                    <h5 class="card-header">Direccion de facturación</h5>
+                    <div class="card-body">
+                      <p class="card-text mb-0"><b>Nombre completo:</b>{{pedido.full_nombre}}</p>
+                      <p class="card-text mb-0 "><b>Direccion:</b>{{pedido.full_direccion}}</p>
+                      <p class="card-text mb-0"><b>Comuna/region:</b>{{pedido.ciudad}} ,{{pedido.estado}}</p>
+                      <p class="card-text mb-0"><b>Pais:</b>{{pedido.pais}}</p>
+                      <p class="card-text mb-0"><b>Correo:</b>{{pedido.email}}</p>
+                      <p class="card-text mb-0"><b>Numero celular:</b>{{pedido.telefono}}</p>
+                      {% if pedido.nota_pedido%}
+                       <b>Nota:</b> {{pedido.nota_pedido}}
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h5 class="card-header">Metodos de pago</h5>
+                    <div class="card-body">
+                      <p class="card-text">Paypal</p>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h5 class="card-header">Revisar productos</h5>
+                    <div class="card-body">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-dark">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Productos</th>
+                                    <th scope="col" width="120">Cantidad</th>
+                                    <th scope="col" width="120">Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for carrito_item in carrito_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="{{carrito_item.producto.imagen.url}}" class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <a href="{{ carrito_item.producto.get_url }}" class="title text-dark">{{ carrito_item.producto.nombre_producto }}</a>
+                                                <p class="text-muted small">
+                                                    {% if carrito_item.variaciones.all %}
+                                                    {% for item in carrito_item.variaciones.all %}
+                                                    {{ item.variacion_categoria | capfirst }} :{{ item.valor_variacion | capfirst }} <br>
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <div class="col">
+                                            <label for="">{{ carrito_item.cantidad }}</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">${{ carrito_item.sub_total }}</var>
+                                            <small class="text-muted">P/U:${{carrito_item.producto.precio}}</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                  </div>
+            </aside> <!-- col.// -->
+            <aside class="col-lg-4">
+
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Precio total:</dt>
+                            <dd class="text-right">${{ total }}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Impuesto:</dt>
+                           <dd class="text-right"> ${{ impuesto }}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Gran total: </dt>
+                            <dd class="text-right text-dark b"><strong>${{grand_total}}</strong></dd>
+                        </dl>
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="{% static './images/misc/payments.png' %}" height="26">
+                        </p>
+                        <a href="{% url 'checkout'%}" class="btn btn-warning btn-block">Realizar el pago</a>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+
+
+        </div> <!-- row.// -->
+      
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

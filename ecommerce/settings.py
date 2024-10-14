@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cuentas',
     'almacen',
     'carts',
+    'pedidos',
 ]
 
 

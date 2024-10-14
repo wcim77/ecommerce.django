@@ -11,4 +11,7 @@ urlpatterns = [
     path('almacen/',include('almacen.urls')),
     path('carts/',include('carts.urls')),
     path('cuentas/',include('cuentas.urls')),
+
+    #orden de pedidos
+    path('pedidos/',include('pedidos.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

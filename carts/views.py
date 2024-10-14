@@ -207,8 +207,11 @@ def  carritoCompra(request, total=0, cantidad=0, carrito_items=None):
 @login_required(login_url='login')
 def checkout(request,total=0, cantidad=0, carrito_items=None):
     try:
-        carrito = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos el carrito
-        carrito_items = CarritoItem.objects.filter(carrito=carrito, is_active=True) #obtenemos los items del carrito
+        if request.user.is_authenticated: #si el usuario esta autenticado 
+            carrito_items = CarritoItem.objects.filter(user=request.user, is_active=True)
+        else:  
+            carrito = Carrito.objects.get(carrito_id=_carrito_id(request)) #obtenemos el carrito
+            carrito_items = CarritoItem.objects.filter(carrito=carrito, is_active=True)
         for carrito_item in carrito_items: #recorremos los items del carrito
             total += (carrito_item.producto.precio * carrito_item.cantidad) #calculamos el total
             cantidad += carrito_item.cantidad #calculamos el contador

@@ -18,6 +18,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 
+import requests
+
 # Create your views here.
 def registerUser(request):
     if request.method == 'POST':
@@ -98,8 +100,18 @@ def login(request): #login
             except:
                 pass
             auth.login (request, user)
-            messages.success(request,'Ya ha iniciado sesion.' )#messages.error(request,'El correo o la contraseña son incorrectos')
-            return redirect('panel')
+            messages.success(request,'Ya ha iniciado sesion.')
+            url= request.META.get('HTTP_REFERER') #obtenemos la url de la pagina anterior
+            try:
+                query = requests.utils.urlparse(url).query
+                
+                #next=/cart/checkout/
+                params = dict(x.split('=') for x in query.split('&')) #next=/cart/checkout/
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage) 
+            except:
+                return redirect('panel')      
         else:   
             messages.error(request,'El correo o la contraseña son incorrectos.')
             return redirect('login')
